@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+</head>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+	<script>
+		google.charts.load('current', {'packages' : ['corechart']});
+		google.charts.setOnLoadCallback(drawAllSheets);
+
+		function drawAllSheets() {
+			drawSheetName('healthSpending', 'SELECT A,B,C,D,E,F,G,H,I',
+						  healthSpendingResponseHandler);
+		} //drawAllSheets
+		
+		function drawSheetName(sheetName, query, responseHandler) {
+			var queryString = encodeURIComponent(query);
+			var query = new google.visualization.Query(
+				'https://docs.google.com/spreadsheets/d/1sUAZrhkL2GX2xBV7TsYL1a2l0a8sDCMQLFeuqCaKhlg/gviz/tq?sheet=' + sheetName + '&headers=1&tq=' + queryString
+
+       // 'https://docs.google.com/spreadsheets/d/1-NwogHiqjRPfIEeh7XxgDYj1CIjyzrz7hxYus4I2VQY/gviz/tq?sheet=' + sheetName + '&headers=1&tq=' + queryString
+			);
+			
+			
+			query.send(responseHandler);
+		} //drawSheetName
+		
+		function healthSpendingResponseHandler(response) {
+			var data = response.getDataTable();
+			data.sort({column: 5, desc: true});
+			
+			var options = {height: 400, 
+						   vAxis: {title: 'Spending in Billions ($)'},
+						   hAxis: {title: 'Country'}
+						   };
+			
+			var chart = new google.visualization.LineChart(document.getElementById('healthSpending_div'));
+			
+			chart.draw(data, options);
+		} //healthSpendingResponseHandler
+		
+	</script>
+</head>
+
+<body>
+	<h3>health Spending by country (2011-2015)</h3>
+	<div id="healthSpending_div" 
+     style="height: 900px; width:500px;">
+    </div>
+
+    <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <a class="navbar-brand" href="#">G20 SPENDING</a>
+              </div>
+              <ul class="nav navbar-nav">
+                
+                
+                <li><a href="military.html">Military Spending</a></li>
+                  
+                </li>
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">HealthSpending <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                        <li><a href="#">Page 1-1</a></li>
+                        <li><a href="#">Page 1-2</a></li>
+                        <li><a href="#">Page 1-3</a></li>
+                      </ul>
+                      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">EducationSpending <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                                <li><a href="#">Page 1-1</a></li>
+                                <li><a href="#">Page 1-2</a></li>
+                                <li><a href="#">Page 1-3</a></li>
+                              </ul>
+              </ul>
+            </div>
+          </nav>
+            
+          <div class="container">
+</body>
+</html>
